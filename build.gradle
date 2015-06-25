@@ -1,0 +1,58 @@
+group 'com.richard.gradle'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'net.researchgate.release'
+
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.richard.gradle.gradletest.App'
+    }
+}
+sourceCompatibility = 1.5
+
+task hello {
+    doLast {
+        println 'group is: ' + group.toString()
+        println 'name is: ' + rootProject.name
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "net.researchgate:gradle-release:2.1.2"
+    }
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://localhost:8082/nexus/content/repositories/snapshots") {
+                authentication(userName: "admin", password: "admin123")
+            }
+            pom.version = version
+            pom.artifactId = rootProject.name
+            pom.groupId = "com.richard.gradle"
+        }
+    }
+}
