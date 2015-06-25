@@ -55,3 +55,8 @@ uploadArchives {
         }
     }
 }
+
+release {
+
+    failOnUnversionedFiles = false
+}
