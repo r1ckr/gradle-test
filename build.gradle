@@ -13,13 +13,6 @@ jar {
 }
 sourceCompatibility = 1.5
 
-task hello {
-    doLast {
-        println 'group is: ' + group.toString()
-        println 'name is: ' + rootProject.name
-    }
-}
-
 repositories {
     mavenCentral()
     maven {
@@ -56,9 +49,8 @@ uploadArchives {
 }
 
 release {
-
     failOnUnversionedFiles = false
-
+    failOnCommitNeeded = false
 }
 
 afterReleaseBuild.dependsOn uploadArchives
