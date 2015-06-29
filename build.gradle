@@ -42,16 +42,15 @@ buildscript {
     }
 }
 
-
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "http://localhost:8082/nexus/content/repositories/snapshots") {
-                authentication(userName: "admin", password: "admin123")
+            repository(url: "${nexusUrl}/content/repositories/releases") {
+                authentication(userName: nexusUsername, password: nexusPassword)
             }
-            pom.version = version
-            pom.artifactId = rootProject.name
-            pom.groupId = "com.richard.gradle"
+            snapshotRepository(url: "${nexusUrl}/content/repositories/snapshots") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
         }
     }
 }
@@ -59,4 +58,7 @@ uploadArchives {
 release {
 
     failOnUnversionedFiles = false
+
 }
+
+afterReleaseBuild.dependsOn uploadArchives
